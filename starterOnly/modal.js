@@ -10,6 +10,7 @@ const quantity = document.getElementById("quantity");
 const locations = document.getElementsByName("location");
 const terms = document.querySelectorAll('.checkbox-input[name="terms"]');
 
+// Trigger form's submission 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
 
@@ -48,8 +49,8 @@ function checkInputs() {
 		setErrorFor(firstName, "Nom est requis !");
 	} else if (!isLetters(firstNameValue)) {
 		setErrorFor(firstName, 'Prénom doit contenir uniquement des lettres !');
-	} else if (firstNameValue.length < 3) {
-		setErrorFor(firstName, 'Prénom doit contenir au moins 3 lettres !');
+	} else if (firstNameValue.length < 2) {
+		setErrorFor(firstName, 'Prénom doit contenir au moins 2 lettres !');
 	} else {
 		setSuccessFor(firstName);
 	}
@@ -59,8 +60,8 @@ function checkInputs() {
 		setErrorFor(lastName, "Nom est requis !");
 	} else if (!isLetters(lastNameValue)) {
 		setErrorFor(lastName,'Nom doit contenir uniquement des lettres !');
-	} else if (lastNameValue.length < 3) {
-		setErrorFor(lastName, 'Nom doit contenir au moins 3 lettres !');
+	} else if (lastNameValue.length < 2) {
+		setErrorFor(lastName, 'Nom doit contenir au moins 2 lettres !');
 	} else {
 		setSuccessFor(lastName);
 	}
@@ -88,20 +89,23 @@ function checkInputs() {
 		setSuccessFor(quantity);
 	}
 
+	// Radio buttons validation
     if (locationValue === "" || locationValue === null) {
 		setErrorFor(locations.item(1), "Sélectionnez le lieu de tournoi !");
 	} else {
 		setSuccessFor(locations.item(1));
 	}
 
+	// Checkboxes validation
     if (termsValues[0] !== 'acceptedTerm' || termsValues[0] === undefined) {
 		setErrorFor(terms[0], "Vous devez accepter les termes et conditions");
 	} else {
 		setSuccessFor(terms[0]);
 	}
 
+
 	const errorMessages = document.querySelectorAll('.form-group>small, .form-groups>small');
-	
+	// Checks error input states
 	const notErrorMessages = Array.from(errorMessages).every(err => err.innerText === "");
 	
 	if(notErrorMessages) {
@@ -117,9 +121,10 @@ function checkInputs() {
 
 		saveFormDataAndShowAlert(formData);
 	} 
-	
 }
 
+
+// Sets error messages for all inputs
 function setErrorFor(input, message) {
 	const formGroup = input.parentElement; //form-group
 	const small = formGroup.querySelector("small");
@@ -131,6 +136,7 @@ function setErrorFor(input, message) {
 	else if(formGroup.classList.contains('form-groups')) formGroup.className = "form-groups error";
 }
 
+// Sets success states for all inputs
 function setSuccessFor(input) {
 	const formGroup = input.parentElement;
 
@@ -139,10 +145,12 @@ function setSuccessFor(input) {
 	} else if(formGroup.classList.contains('form-groups')) formGroup.className = "form-groups success";
 }
 
+// Checks if the user's input is of letter type
 function isLetters(letter) {
 	return /[a-zA-Z-âãäåæçèéêëìíîïðñòóôõøùúûüýþÿ]/.test(letter);
 }
 
+// Matches valide email 
 function isEmail(email) {
 	return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
 }
@@ -151,19 +159,23 @@ function isEmail(email) {
 const heroSection = document.querySelector(".hero-section-bg");
 const alertMessage =  document.querySelector('.container');
 
+// Safes form data and shows a confirmation message
 function saveFormDataAndShowAlert(formData) {
 	// console.log(formData) // Data that will be send it to the server !
 	
 	setTimeout(() =>{ 
 		Array.from(document.querySelectorAll('.form-group')).map(formGroup => formGroup.classList.remove('success'));
 		form.reset();
-		
-		
+			
 		heroSection.style.display = "none";
 		alertMessage.style.display = 'flex';
 	}, 500);
 };
 
+
+// Trigger click envent on homburger menu 
+document.querySelector(".edit-nav").addEventListener("click", editNav);
+// Modifies header classes
 function editNav() {
 	const x = document.getElementById("headerSection");
 	if (x.className === "header") {
@@ -173,7 +185,7 @@ function editNav() {
 	}
 }
 
-// DOM Elements
+
 const modalBtn = document.querySelectorAll(".modal-btn");
 const closeModalBtns = document.querySelectorAll(".close-modal-btn");
 
@@ -185,6 +197,9 @@ closeModalBtns.forEach((btn) => btn.addEventListener("click", closeModal));
 function openModal() {
 	heroSection.style.display = "block";
 }
+
+// Trigger modal closing event
+document.querySelector(".close-alert-btn").addEventListener("click", closeModal);
 // close modal form
 function closeModal() {
 	alertMessage.style.display = 'none';
